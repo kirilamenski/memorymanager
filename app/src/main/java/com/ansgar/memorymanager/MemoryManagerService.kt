@@ -12,7 +12,6 @@ class MemoryManagerService : Service() {
     private val tag = MemoryManagerService::class.java.canonicalName
 
     var timer: Timer? = null
-    var i: Int = 0
 
     override fun onCreate() {
         Log.i(tag, "On Create")
@@ -20,18 +19,17 @@ class MemoryManagerService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.i(tag, "On Start command")
+        val delay = MemoryManager.delay
 
         timer?.scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
-                i++
-                val memory = "$i - ${MemoryManagerUtil.showAppMemoryUsage()}"
+                val memory = MemoryManagerUtil.showAppMemoryUsage()
                 val responseIntent = Intent()
                 responseIntent.action = "action"
                 responseIntent.putExtra("data", memory)
                 sendBroadcast(responseIntent)
             }
-        }, 0, 1000)
+        }, 5000, delay)
 
         return Service.START_STICKY
     }
