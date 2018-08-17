@@ -1,52 +1,33 @@
 package com.ansgar.memorymanager
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.graphics.PixelFormat
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
-import android.view.WindowManager
-import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
-import android.view.Gravity
 
 class MainActivity : AppCompatActivity() {
-
-//    var receiver: MyReciver? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        initRecyclerView()
+    }
+
+    override fun onStart() {
+        super.onStart()
         val memoryManager = MemoryManager.init(this)
         memoryManager.delay = 3000
-
-//        receiver = MyReciver(this)
-
-//        val intentFilter = IntentFilter()
-//        intentFilter.addAction("action")
-//        registerReceiver(receiver, intentFilter)
-//
-//        val intent = Intent(this, MemoryManagerService::class.java)
-//        startService(intent)
-
-        initRecycerView()
+        memoryManager.x = 10
+        memoryManager.y = 300
     }
 
-    override fun onDestroy() {
-//        val intent = Intent(this, MemoryManagerService::class.java)
-//        stopService(intent)
-//        unregisterReceiver(receiver)
+    override fun onPause() {
+        super.onPause()
         MemoryManager.destroy()
-        super.onDestroy()
     }
 
-    private fun initRecycerView() {
+    private fun initRecyclerView() {
         val adapter = RvAdapter()
         adapter.models = getModels()
         recycler_View.layoutManager = LinearLayoutManager(this)
@@ -61,37 +42,5 @@ class MainActivity : AppCompatActivity() {
 
         return models
     }
-
-
-//    class MyReciver(val context: Context) : BroadcastReceiver() {
-//
-//        var textView: TextView? = null
-//        var windowManager: WindowManager? = null
-//
-//        override fun onReceive(p0: Context?, p1: Intent?) {
-//            var text = p1?.getStringExtra("data") ?: "Not available"
-//
-//            if (windowManager == null) {
-//                val params = WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
-//                        WindowManager.LayoutParams.WRAP_CONTENT,
-//                        WindowManager.LayoutParams.TYPE_APPLICATION_PANEL,
-//                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-//                        PixelFormat.TRANSLUCENT)
-//                params.gravity = Gravity.TOP or Gravity.LEFT
-//                params.x = 100
-//                params.y = 400
-//                windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-//                textView = TextView(context)
-//                textView?.setBackgroundResource(R.drawable.popup_background)
-//                textView?.setTextColor(ContextCompat.getColor(context, android.R.color.white))
-//                windowManager?.addView(textView, params)
-//            }
-//
-//            textView?.text = text
-//
-//            Log.i("Memory", "get callback $text")
-//        }
-//
-//    }
 
 }

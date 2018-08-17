@@ -19,7 +19,7 @@ class MainApp : MultiDexApplication(), Application.ActivityLifecycleCallbacks {
     }
 
     override fun onActivityDestroyed(p0: Activity?) {
-
+//        MemoryManager.destroy()
     }
 
     override fun onActivitySaveInstanceState(p0: Activity?, p1: Bundle?) {
@@ -36,6 +36,10 @@ class MainApp : MultiDexApplication(), Application.ActivityLifecycleCallbacks {
 
     override fun onCreate() {
         super.onCreate()
+
+        // Can be used by application context but need to enable permission Display overlay
+//        val memoryManager = MemoryManager.init(applicationContext)
+//        memoryManager.delay = 3000
     }
 
 }

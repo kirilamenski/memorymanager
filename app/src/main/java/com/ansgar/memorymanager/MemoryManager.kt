@@ -3,36 +3,41 @@ package com.ansgar.memorymanager
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.util.Log
 import java.lang.ref.WeakReference
 
 object MemoryManager {
 
+    var delay: Long = 0
+    var x: Int = 0
+    var y: Int = 0
+
     private var weakContext: WeakReference<Context>? = null
     private var weakServiceReceiver: WeakReference<ServiceReceiver>? = null
-    var delay: Long = 0
 
     fun init(context: Context): MemoryManager {
-        if (this.weakContext == null) {
-            this.weakContext = WeakReference(context)
-            weakServiceReceiver = WeakReference(ServiceReceiver(weakContext?.get()))
+        this.weakContext = WeakReference(context)
+        val overlay = OverlayView.initOverlayView("")
+        overlay.weakContext = WeakReference(context)
 
-            val intentFilter = IntentFilter()
-            // TODO Create File with constants
-            intentFilter.addAction("action")
-            weakContext?.get()?.registerReceiver(weakServiceReceiver?.get(), intentFilter)
+        weakServiceReceiver = WeakReference(ServiceReceiver())
 
-            val intent = Intent(weakContext?.get(), MemoryManagerService::class.java)
-            weakContext?.get()?.startService(intent)
-        }
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(Constants.EXTRA_ACTION)
+        weakContext?.get()?.registerReceiver(weakServiceReceiver?.get(), intentFilter)
+
+        val intent = Intent(weakContext?.get(), MemoryManagerService::class.java)
+        weakContext?.get()?.startService(intent)
         return this
     }
 
     fun destroy() {
-        Log.i("!!!!", "Destroyed")
         val intent = Intent(weakContext?.get(), MemoryManagerService::class.java)
         weakContext?.get()?.stopService(intent)
-        weakContext?.get()?.unregisterReceiver(weakServiceReceiver?.get())
+        if (weakServiceReceiver?.get() != null) {
+            weakContext?.get()?.unregisterReceiver(weakServiceReceiver?.get())
+        }
+
+        OverlayView.destroy()
     }
 
 }
