@@ -20,7 +20,7 @@ internal class MemoryManagerService : Service() {
 
         timer?.scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
-                val memory = MemoryManagerUtil.getAppMemoryUsage() + "\n" + MemoryManagerUtil.getCpuAppUsage(1)
+                val memory = MemoryManagerUtil.getAppMemoryUsage() + "\n" + MemoryManagerUtil.getCpuAppUsage()
                 val responseIntent = Intent()
                 responseIntent.action = Constants.EXTRA_ACTION
                 responseIntent.putExtra(Constants.EXTRA_MEMORY_USAGE_DATA, memory)

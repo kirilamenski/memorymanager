@@ -6,7 +6,6 @@ import java.io.*
 class MemoryManagerUtil {
 
     companion object {
-        var i = 0
         fun getAppMemoryUsage(): String {
             val runtime = Runtime.getRuntime()
             val useMemoryMb = (runtime.totalMemory() - runtime.freeMemory()) / 1048576L
@@ -17,29 +16,30 @@ class MemoryManagerUtil {
                     + "\n" + "Available heap size: " + availableHeapSizeMb + " Mb")
         }
 
-        fun getCpuAppUsage(pid: Int): String {
-            var cpu = ""
-            var mem = ""
-            try {
+        fun getCpuAppUsage(): String {
+            var cpu = 0f
+            val pid = android.os.Process.myPid()
+            return try {
                 val process = Runtime.getRuntime().exec("top -n 1 -d 1")
                 val br = BufferedReader(InputStreamReader(process.inputStream))
                 var i = 0
                 while (br.readLine() != null) {
-                    if (i == 4) {
-                        val line = br.readLine().split(" ") //
-                        cpu = line[17]
-                        mem = line[20]
-                        Log.i("!!!!", "$i - Cpu: $line \n")
+                    val line = br.readLine()?.split(" ") ?: arrayListOf()
+                    line.forEach { item ->
+                        if (isCpuValue(item)) cpu += item.replace("%", "").toFloat()
                     }
+                    Log.i("!!!!", "Line $line ----- $pid")
                     i++
+                    if (i == 10) break
                 }
+                "Total CPU: $cpu%"
             } catch (e: InterruptedException) {
                 e.printStackTrace()
+                "Not available"
             }
-
-            return "CPU: $cpu%, MEM: $mem%"
         }
 
-    }
+        private fun isCpuValue(value: String): Boolean = value.matches("-?\\d+(\\.\\d+)?%".toRegex())
 
+    }
 }
