@@ -1,6 +1,5 @@
 package com.ansgar.memorymanager
 
-import android.util.Log
 import java.io.*
 
 class MemoryManagerUtil {
@@ -23,12 +22,28 @@ class MemoryManagerUtil {
                 val process = Runtime.getRuntime().exec("top -n 1 -d 1")
                 val br = BufferedReader(InputStreamReader(process.inputStream))
                 var i = 0
+                var cpuColIndex = -1
                 while (br.readLine() != null) {
                     val line = br.readLine()?.split(" ") ?: arrayListOf()
-                    line.forEach { item ->
-                        if (isCpuValue(item)) cpu += item.replace("%", "").toFloat()
+                    val notNullLine = line.filter { !it.isNullOrEmpty() }
+                    notNullLine.forEachIndexed { index, item ->
+                        if (cpuColIndex > -1) {
+                            if (isNumeric(item) || isCpuValue(item)) {
+                                cpu += notNullLine[cpuColIndex].replace("%", "")
+                                        .replace(",", "")
+                                        .toFloat()
+                            }
+                        } else {
+                            if (isCpuValue(item)) {
+                                cpu += item.replace("%", "").toFloat()
+                            }
+                        }
+
+                        if (isColCpuValue(item)) {
+                            cpuColIndex = index
+                        }
+
                     }
-                    Log.i("!!!!", "Line $line ----- $pid")
                     i++
                     if (i == 10) break
                 }
@@ -39,7 +54,14 @@ class MemoryManagerUtil {
             }
         }
 
+        private fun isColCpuValue(value: String): Boolean {
+            val lowerVal = value.toLowerCase()
+            return lowerVal.contains("cpu%") || lowerVal.contains("0%sys")
+        }
+
         private fun isCpuValue(value: String): Boolean = value.matches("-?\\d+(\\.\\d+)?%".toRegex())
+
+        private fun isNumeric(value: String): Boolean = value.matches("-?\\d+(\\.\\d+)".toRegex())
 
     }
 }

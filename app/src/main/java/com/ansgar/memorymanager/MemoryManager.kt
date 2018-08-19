@@ -27,6 +27,7 @@ object MemoryManager {
 
         val intent = Intent(weakContext?.get(), MemoryManagerService::class.java)
         weakContext?.get()?.startService(intent)
+
         return this
     }
 
