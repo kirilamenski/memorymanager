@@ -33,6 +33,8 @@ object MemoryManager {
     }
 
     fun destroy() {
+        if (weakContext == null || weakContext?.get() == null) return
+
         val intent = Intent(weakContext?.get(), MemoryManagerService::class.java)
         weakContext?.get()?.stopService(intent)
         if (weakServiceReceiver?.get() != null) {
