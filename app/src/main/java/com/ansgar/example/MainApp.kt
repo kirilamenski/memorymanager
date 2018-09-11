@@ -1,4 +1,4 @@
-package com.ansgar.memorymanager
+package com.ansgar.example
 
 import android.app.Activity
 import android.app.Application

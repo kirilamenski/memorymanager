@@ -8,6 +8,7 @@ import java.lang.ref.WeakReference
 object MemoryManager {
 
     var delay: Long = 0
+    var maxHeapSize = 50
     var x: Int = 0
     var y: Int = 0
 
@@ -15,9 +16,9 @@ object MemoryManager {
     private var weakServiceReceiver: WeakReference<ServiceReceiver>? = null
 
     fun init(context: Context): MemoryManager {
-        this.weakContext = WeakReference(context)
+        weakContext = WeakReference(context)
         val overlay = OverlayView.initOverlayView("")
-        overlay.weakContext = WeakReference(context)
+        OverlayView.weakContext = WeakReference(context)
 
         weakServiceReceiver = WeakReference(ServiceReceiver())
 

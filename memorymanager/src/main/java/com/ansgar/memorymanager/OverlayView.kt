@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.os.Build
-import android.util.Log
 import android.view.*
 import android.widget.TextView
 import java.lang.ref.WeakReference
@@ -54,6 +53,7 @@ internal object OverlayView {
         return params
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun getTextView(): WeakReference<TextView> {
         val weakTv = WeakReference(TextView(weakContext?.get()))
         weakTv.get()?.setBackgroundResource(R.drawable.popup_background)
@@ -66,7 +66,7 @@ internal object OverlayView {
         }
 
         // TODO make it movable
-//        weakTv.get()?.setOnTouchListener(onTouchListener)
+        weakTv.get()?.setOnTouchListener(onTouchListener)
 
         return weakTv
     }
@@ -74,37 +74,34 @@ internal object OverlayView {
     private var xOffset = 0f
     private var yOffset = 0f
     @SuppressLint("ClickableViewAccessibility")
-    private var onTouchListener = View.OnTouchListener { view, motionEvent ->
-        var canBeMoving = true
-
+    private var onTouchListener = View.OnTouchListener { _, motionEvent ->
         val x = motionEvent.x
         val y = motionEvent.y
+        val rawX = motionEvent.rawX
+        val rawY = motionEvent.rawY
 
         when (motionEvent.action) {
-            MotionEvent.ACTION_DOWN -> {
-                canBeMoving = !onMotionDown(x, y)
-//                if (!canBeMoving) weakTextView?.get()?.setOnTouchListener(null)
-            }
-            MotionEvent.ACTION_MOVE -> onMotionMove(x, y)
-            MotionEvent.ACTION_UP -> onMotionUp(x, y)
+            MotionEvent.ACTION_DOWN -> onMotionDown(x, y)
+            MotionEvent.ACTION_MOVE -> onMotionMove(rawX, rawY)
+            MotionEvent.ACTION_UP -> onMotionUp(rawX, rawY)
         }
         true
     }
 
-    private fun onMotionDown(x: Float, y: Float): Boolean {
+    private fun onMotionDown(x: Float, y: Float) {
         val textView = weakTextView?.get()
 
         xOffset = x - (textView?.x ?: 0f)
         yOffset = y - (textView?.y ?: 0f)
-
-        return x < (textView?.x ?: 0f) || x > ((textView?.x ?: 0f) + (textView?.width ?: 0))
-                || y < (textView?.y ?: 0f) || y > ((textView?.y ?: 0f) + (textView?.height ?: 0))
     }
 
     private fun onMotionMove(x: Float, y: Float) {
         val textView = weakTextView?.get()
-        textView?.x = x - xOffset
-        textView?.y = y - yOffset
+        val params = textView?.layoutParams as WindowManager.LayoutParams
+        params.x = (x - xOffset).toInt()
+        params.y = (y - yOffset).toInt()
+
+        windowManager?.updateViewLayout(textView, params)
     }
 
     private fun onMotionUp(x: Float, y: Float) {

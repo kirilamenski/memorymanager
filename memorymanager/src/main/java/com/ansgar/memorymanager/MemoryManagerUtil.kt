@@ -5,6 +5,11 @@ import java.io.*
 class MemoryManagerUtil {
 
     companion object {
+        val fpsMap = ArrayList<Long>()
+        var lastNanoTime = 0L
+        var fps = 0
+        var frames = 0
+
         fun getAppMemoryUsage(): String {
             val runtime = Runtime.getRuntime()
             val useMemoryMb = (runtime.totalMemory() - runtime.freeMemory()) / 1048576L
@@ -51,6 +56,23 @@ class MemoryManagerUtil {
             } catch (e: InterruptedException) {
                 e.printStackTrace()
                 "Not available"
+            }
+        }
+
+        fun getFps(nanoTime: Long, maxHeapSize: Int): Int {
+            frames++
+            if ((nanoTime - lastNanoTime) / 1000000 >= 1000) {
+                fps = 1000 / frames
+                frames = 0
+            }
+            lastNanoTime = nanoTime
+
+            return fps
+        }
+
+        private fun cleanFpsHeap(maxHeapSize: Int) {
+            if (fpsMap.size > maxHeapSize) {
+                fpsMap.removeAt(0)
             }
         }
 

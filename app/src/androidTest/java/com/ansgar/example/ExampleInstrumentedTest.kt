@@ -1,4 +1,4 @@
-package com.ansgar.memorymanager
+package com.ansgar.example
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

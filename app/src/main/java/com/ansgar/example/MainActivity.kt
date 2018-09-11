@@ -1,10 +1,11 @@
-package com.ansgar.memorymanager
+package com.ansgar.example
 
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v7.widget.LinearLayoutManager
+import com.ansgar.memorymanager.MemoryManager
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -20,7 +21,8 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         val memoryManager = MemoryManager.init(this)
-        memoryManager.delay = 1500
+        memoryManager.delay = 1000
+        memoryManager.maxHeapSize = 10
         memoryManager.x = 10
         memoryManager.y = 300
     }
