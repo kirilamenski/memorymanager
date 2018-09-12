@@ -18,7 +18,6 @@ internal object OverlayView {
 
     private var windowManager: WindowManager? = null
     private var weakTextView: WeakReference<TextView>? = null
-    private var screenHeight: Int = 0
 
     fun initOverlayView(text: String): OverlayView {
         if (windowManager == null && weakContext != null && weakContext?.get() != null) {
@@ -26,7 +25,6 @@ internal object OverlayView {
         }
 
         weakTextView?.get()?.text = text
-        screenHeight = weakContext?.let { ScreenUtil(it).getScreenHeight() } ?: 0
 
         return this
     }
