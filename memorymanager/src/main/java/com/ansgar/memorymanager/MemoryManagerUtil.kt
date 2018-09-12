@@ -62,11 +62,10 @@ class MemoryManagerUtil {
         fun getFps(nanoTime: Long, maxHeapSize: Int): Int {
             frames++
             if ((nanoTime - lastNanoTime) / 1000000 >= 1000) {
-                fps = 1000 / frames
+                fps = 60 / frames
                 frames = 0
             }
             lastNanoTime = nanoTime
-
             return fps
         }
 
