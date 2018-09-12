@@ -2,8 +2,10 @@ package com.ansgar.example
 
 import android.app.Activity
 import android.app.Application
+import android.content.Context
 import android.os.Bundle
 import android.support.multidex.MultiDexApplication
+import com.ansgar.memorymanager.MemoryManager
 
 class MainApp : MultiDexApplication(), Application.ActivityLifecycleCallbacks {
     override fun onActivityPaused(p0: Activity?) {
@@ -36,10 +38,16 @@ class MainApp : MultiDexApplication(), Application.ActivityLifecycleCallbacks {
 
     override fun onCreate() {
         super.onCreate()
+        val memoryManager = MemoryManager.init(applicationContext)
+        memoryManager?.delay = 1000
+        memoryManager?.maxHeapSize = 10
+        memoryManager?.x = 10
+        memoryManager?.y = 300
+    }
 
-        // Can be used by application context but need to enable permission Display overlay
-//        val memoryManager = MemoryManager.init(applicationContext)
-//        memoryManager.delay = 3000
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        registerActivityLifecycleCallbacks(this)
     }
 
 }

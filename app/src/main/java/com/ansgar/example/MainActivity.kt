@@ -5,8 +5,8 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.v7.widget.LinearLayoutManager
-import com.ansgar.memorymanager.MemoryManager
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,20 +16,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         initRecyclerView()
+
     }
 
     override fun onStart() {
         super.onStart()
-        val memoryManager = MemoryManager.init(this)
-        memoryManager.delay = 1000
-        memoryManager.maxHeapSize = 10
-        memoryManager.x = 10
-        memoryManager.y = 300
+//        val memoryManager = MemoryManager.init(this)
+//        memoryManager?.delay = 1000
+//        memoryManager?.maxHeapSize = 10
+//        memoryManager?.x = 10
+//        memoryManager?.y = 300
     }
 
     override fun onPause() {
         super.onPause()
-        MemoryManager.destroy()
+//        MemoryManager.destroy()
     }
 
     private fun initRecyclerView() {
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getModels(): ArrayList<Model> {
         val models = ArrayList<Model>()
-        for (i in 1 until 1000) {
+        for (i in 1 until 10000) {
             models.add(Model("Name $i", i, R.drawable.ic_example))
         }
 
