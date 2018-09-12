@@ -1,12 +1,15 @@
 package com.ansgar.memorymanager
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.content.Context
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.os.Build
+import android.provider.Settings
 import android.view.*
 import android.widget.TextView
+import android.widget.Toast
 import java.lang.ref.WeakReference
 
 internal object OverlayView {
@@ -18,17 +21,18 @@ internal object OverlayView {
     private var screenHeight: Int = 0
 
     fun initOverlayView(text: String): OverlayView {
-        if (windowManager == null && weakContext != null) initWindowManager()
+        if (windowManager == null && weakContext != null && weakContext?.get() != null) {
+            initWindowManager()
+        }
 
         weakTextView?.get()?.text = text
-
         screenHeight = weakContext?.let { ScreenUtil(it).getScreenHeight() } ?: 0
 
         return this
     }
 
     fun destroy() {
-        windowManager?.removeView(weakTextView?.get())
+        weakTextView?.get()?.let { windowManager?.removeView(it) }
         weakContext = null
         weakTextView = null
         windowManager = null
@@ -36,6 +40,10 @@ internal object OverlayView {
 
     private fun initWindowManager() {
         windowManager = weakContext?.get()?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+
+        if (weakContext != null && weakContext?.get() != null && weakContext?.get() is Application) {
+            if (!checkPermission()) return
+        }
         weakTextView = getTextView()
     }
 
@@ -43,7 +51,7 @@ internal object OverlayView {
         val params = WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_APPLICATION_PANEL,
+                getType(),
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT
         )
@@ -111,7 +119,24 @@ internal object OverlayView {
     private fun getType(): Int = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
         WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY
     } else {
-        WindowManager.LayoutParams.TYPE_APPLICATION_PANEL
+        if (weakContext?.get() is Application) {
+            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+        } else {
+            WindowManager.LayoutParams.TYPE_APPLICATION_PANEL
+        }
+    }
+
+    private fun checkPermission(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(weakContext?.get())) {
+                Toast.makeText(OverlayView.weakContext?.get(),
+                        "You need to enable permission",
+                        Toast.LENGTH_LONG).show()
+                MemoryManager.destroy()
+                return false
+            }
+        }
+        return true
     }
 
 }

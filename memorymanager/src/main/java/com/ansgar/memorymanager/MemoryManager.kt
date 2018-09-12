@@ -15,7 +15,7 @@ object MemoryManager {
     private var weakContext: WeakReference<Context>? = null
     private var weakServiceReceiver: WeakReference<ServiceReceiver>? = null
 
-    fun init(context: Context): MemoryManager {
+    fun init(context: Context): MemoryManager? {
         weakContext = WeakReference(context)
         val overlay = OverlayView.initOverlayView("")
         OverlayView.weakContext = WeakReference(context)
