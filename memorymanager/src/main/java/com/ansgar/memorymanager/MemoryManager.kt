@@ -3,6 +3,7 @@ package com.ansgar.memorymanager
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.util.Log
 import java.lang.ref.WeakReference
 
 object MemoryManager {
@@ -37,8 +38,13 @@ object MemoryManager {
 
         val intent = Intent(weakContext?.get(), MemoryManagerService::class.java)
         weakContext?.get()?.stopService(intent)
-        if (weakServiceReceiver?.get() != null) {
-            weakContext?.get()?.unregisterReceiver(weakServiceReceiver?.get())
+
+        try {
+            if (weakServiceReceiver?.get() != null) {
+                weakContext?.get()?.unregisterReceiver(weakServiceReceiver?.get())
+            }
+        } catch (e: IllegalArgumentException) {
+            Log.e(MemoryManager::class.java.simpleName, "Service is not registered")
         }
 
         OverlayView.destroy()
