@@ -22,44 +22,45 @@ class MemoryManagerUtil {
         }
 
         fun getCpuAppUsage(): String {
-            var cpu = 0f
-            val pid = android.os.Process.myPid()
-
-            return try {
-                val process = Runtime.getRuntime().exec("top -n 1 -d 1")
-                val br = BufferedReader(InputStreamReader(process.inputStream))
-                var i = 0
-                var cpuColIndex = -1
-
-                while (br.readLine() != null) {
-                    val line = br.readLine()?.split(" ") ?: arrayListOf()
-                    val notNullLine = line.filter { !it.isNullOrEmpty() }
-                    notNullLine.forEachIndexed { index, item ->
-                        if (cpuColIndex > -1) {
-                            if (isNumeric(item) || isCpuValue(item)) {
-                                cpu += notNullLine[cpuColIndex].replace("%", "")
-                                        .replace(",", "")
-                                        .toFloat()
-                            }
-                        } else {
-                            if (isCpuValue(item)) {
-                                cpu += item.replace("%", "").toFloat()
-                            }
-                        }
-
-                        if (isColCpuValue(item)) {
-                            cpuColIndex = index
-                        }
-
-                    }
-                    i++
-                    if (i == 10) break
-                }
-                "Total CPU: $cpu%"
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
-                "Not available"
-            }
+            return ""
+//            var cpu = 0f
+//            val pid = android.os.Process.myPid()
+//
+//            return try {
+//                val process = Runtime.getRuntime().exec("top -n 1 -d 1")
+//                val br = BufferedReader(InputStreamReader(process.inputStream))
+//                var i = 0
+//                var cpuColIndex = -1
+//
+//                while (br.readLine() != null) {
+//                    val line = br.readLine()?.split(" ") ?: arrayListOf()
+//                    val notNullLine = line.filter { !it.isNullOrEmpty() }
+//                    notNullLine.forEachIndexed { index, item ->
+//                        if (cpuColIndex > -1) {
+//                            if (isNumeric(item) || isCpuValue(item)) {
+//                                cpu += notNullLine[cpuColIndex].replace("%", "")
+//                                        .replace(",", "")
+//                                        .toFloat()
+//                            }
+//                        } else {
+//                            if (isCpuValue(item)) {
+//                                cpu += item.replace("%", "").toFloat()
+//                            }
+//                        }
+//
+//                        if (isColCpuValue(item)) {
+//                            cpuColIndex = index
+//                        }
+//
+//                    }
+//                    i++
+//                    if (i == 10) break
+//                }
+//                "Total CPU: $cpu%"
+//            } catch (e: InterruptedException) {
+//                e.printStackTrace()
+//                "Not available"
+//            }
         }
 
         fun getFps(nanoTime: Long, maxHeapSize: Int): Int {

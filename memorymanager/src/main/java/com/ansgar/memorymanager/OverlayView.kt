@@ -50,7 +50,7 @@ internal object OverlayView {
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 getType(),
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                WindowManager.LayoutParams.FLAGS_CHANGED,
                 PixelFormat.TRANSLUCENT
         )
         params.gravity = Gravity.TOP or Gravity.LEFT
@@ -70,8 +70,6 @@ internal object OverlayView {
         weakTv.get()?.let {
             windowManager?.addView(it, getWindowManagerParams())
         }
-
-        // TODO make it movable
         weakTv.get()?.setOnTouchListener(onTouchListener)
 
         return weakTv

@@ -18,15 +18,8 @@ internal class MemoryManagerService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         timer?.scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
-                val stringBuilder = StringBuilder()
-                stringBuilder.append(MemoryManagerUtil.getAppMemoryUsage())
-                        .append("\n")
-                        .append(MemoryManagerUtil.getCpuAppUsage())
-                        .append("\n")
                 val responseIntent = Intent()
                 responseIntent.action = Constants.EXTRA_ACTION
-                responseIntent.putExtra(Constants.EXTRA_MEMORY_USAGE_DATA,
-                        stringBuilder.toString())
                 sendBroadcast(responseIntent)
             }
         }, 1000, MemoryManager.delay)
