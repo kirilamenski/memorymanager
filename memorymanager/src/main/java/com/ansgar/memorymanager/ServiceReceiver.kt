@@ -10,26 +10,39 @@ import android.view.Choreographer
 
 internal class ServiceReceiver : BroadcastReceiver() {
 
+    var memoryUtil: MemoryManagerUtil? = null
+    private var frameCallback: Choreographer.FrameCallback? = null
+    private var isFirstFrame = true
+
     override fun onReceive(ctx: Context?, data: Intent?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            val frameCallback = Choreographer.FrameCallback { nanos ->
+
+            frameCallback = Choreographer.FrameCallback { nanos ->
                 OverlayView.initOverlayView(getString(nanos))
+                if (!isFirstFrame) {
+                    Choreographer.getInstance().postFrameCallback(frameCallback)
+                }
             }
 
-            Handler(Looper.getMainLooper()).post {
-                Choreographer.getInstance().postFrameCallback(frameCallback)
+            if (isFirstFrame) {
+                Handler(Looper.getMainLooper()).post {
+                    Choreographer.getInstance().postFrameCallback(frameCallback)
+                }
+                isFirstFrame = false
+                return
             }
         }
     }
 
     private fun getString(nanos: Long): String {
+        if (memoryUtil == null) memoryUtil = MemoryManagerUtil()
         val stringBuilder = StringBuilder()
-        return stringBuilder.append(MemoryManagerUtil.getAppMemoryUsage())
+        return stringBuilder.append(memoryUtil?.getAppMemoryUsage())
                 .append("\n")
-                .append(MemoryManagerUtil.getCpuAppUsage())
-                .append("\n")
+//                .append(memoryUtil?.getCpuAppUsage())
+//                .append("\n")
                 .append("FPS: ")
-                .append(MemoryManagerUtil.getFps(nanos, 20))
+                .append(memoryUtil?.getFps(nanos, 20))
                 .toString()
     }
 

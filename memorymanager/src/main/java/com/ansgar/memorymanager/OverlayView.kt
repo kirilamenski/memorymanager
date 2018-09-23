@@ -50,7 +50,7 @@ internal object OverlayView {
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 getType(),
-                WindowManager.LayoutParams.FLAGS_CHANGED,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT
         )
         params.gravity = Gravity.TOP or Gravity.LEFT
