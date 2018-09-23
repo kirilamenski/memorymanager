@@ -89,7 +89,7 @@ internal object OverlayView {
             MotionEvent.ACTION_MOVE -> onMotionMove(rawX, rawY)
             MotionEvent.ACTION_UP -> onMotionUp(rawX, rawY)
         }
-        true
+        false
     }
 
     private fun onMotionDown(x: Float, y: Float) {
@@ -113,7 +113,7 @@ internal object OverlayView {
     }
 
     private fun getType(): Int = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-        WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY
+        WindowManager.LayoutParams.TYPE_PHONE
     } else {
         if (weakContext?.get() is Application) {
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY

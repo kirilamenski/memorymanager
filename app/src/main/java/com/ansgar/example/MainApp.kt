@@ -38,11 +38,11 @@ class MainApp : MultiDexApplication(), Application.ActivityLifecycleCallbacks {
 
     override fun onCreate() {
         super.onCreate()
-//        val memoryManager = MemoryManager.init(applicationContext)
-//        memoryManager?.delay = 1000
-//        memoryManager?.maxHeapSize = 10
-//        memoryManager?.x = 10
-//        memoryManager?.y = 300
+        val memoryManager = MemoryManager.init(applicationContext)
+        memoryManager?.delay = 1000
+        memoryManager?.maxHeapSize = 10
+        memoryManager?.x = 10
+        memoryManager?.y = 300
     }
 
     override fun attachBaseContext(base: Context?) {

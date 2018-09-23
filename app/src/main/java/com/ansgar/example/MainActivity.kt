@@ -22,16 +22,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        val memoryManager = MemoryManager.init(this)
-        memoryManager?.delay = 1000
-        memoryManager?.maxHeapSize = 10
-        memoryManager?.x = 10
-        memoryManager?.y = 300
+//        val memoryManager = MemoryManager.init(this)
+//        memoryManager?.delay = 1000
+//        memoryManager?.maxHeapSize = 10
+//        memoryManager?.x = 10
+//        memoryManager?.y = 300
     }
 
     override fun onPause() {
         super.onPause()
-        MemoryManager.destroy()
+//        MemoryManager.destroy()
     }
 
     private fun initRecyclerView() {
