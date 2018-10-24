@@ -42,7 +42,14 @@ internal object OverlayView {
         if (weakContext != null && weakContext?.get() != null && weakContext?.get() is Application) {
             if (!checkPermission()) return
         }
+
+        createView()
+    }
+
+    private fun createView() {
         weakTextView = getTextView()
+
+        windowManager?.addView(weakTextView?.get(), getWindowManagerParams())
     }
 
     private fun getWindowManagerParams(): WindowManager.LayoutParams {
@@ -62,15 +69,14 @@ internal object OverlayView {
     @SuppressLint("ClickableViewAccessibility")
     private fun getTextView(): WeakReference<TextView> {
         val weakTv = WeakReference(TextView(weakContext?.get()))
-        weakTv.get()?.setBackgroundResource(R.drawable.popup_background)
-        weakTv.get()?.setTextColor(Color.WHITE)
-        weakTv.get()?.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT)
-        weakTv.get()?.setPadding(25, 10, 25, 10)
-        weakTv.get()?.let {
-            windowManager?.addView(it, getWindowManagerParams())
+        weakTv.get()?.let{
+            it.setBackgroundResource(R.drawable.popup_background)
+            it.setTextColor(Color.WHITE)
+            it.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT)
+            it.setPadding(50, 25, 50, 25)
+            it.setOnTouchListener(onTouchListener)
         }
-        weakTv.get()?.setOnTouchListener(onTouchListener)
 
         return weakTv
     }
@@ -127,7 +133,8 @@ internal object OverlayView {
             if (!Settings.canDrawOverlays(weakContext?.get())) {
                 Toast.makeText(OverlayView.weakContext?.get(),
                         "You need to enable permission",
-                        Toast.LENGTH_LONG).show()
+                        Toast.LENGTH_LONG)
+                        .show()
                 MemoryManager.destroy()
                 return false
             }

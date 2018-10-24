@@ -37,12 +37,12 @@ internal class ServiceReceiver : BroadcastReceiver() {
     private fun getString(nanos: Long): String {
         if (memoryUtil == null) memoryUtil = MemoryManagerUtil()
         val stringBuilder = StringBuilder()
-        return stringBuilder.append(memoryUtil?.getAppMemoryUsage())
+        val model = memoryUtil?.getAppMemoryUsage()
+        return stringBuilder.append(model?.toString())
+                .append(" Mb")
                 .append("\n")
-//                .append(memoryUtil?.getCpuAppUsage())
-//                .append("\n")
-                .append("FPS: ")
                 .append(memoryUtil?.getFps(nanos, 20))
+                .append(" fps")
                 .toString()
     }
 
