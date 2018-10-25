@@ -119,7 +119,7 @@ internal object OverlayView {
     }
 
     private fun getType(): Int = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-        WindowManager.LayoutParams.TYPE_PHONE
+        WindowManager.LayoutParams.TYPE_APPLICATION_PANEL
     } else {
         if (weakContext?.get() is Application) {
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
