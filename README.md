@@ -30,3 +30,8 @@ Kotlin
   memoryManager?.x = 10
   memoryManager?.y = 300
 ```
+
+to destroy manager call 
+```kotlin
+MemoryManager.destroy()
+```
