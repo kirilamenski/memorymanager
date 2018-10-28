@@ -9,7 +9,6 @@ import java.lang.ref.WeakReference
 object MemoryManager {
 
     var delay: Long = 0
-    var maxHeapSize = 50
     var x: Int = 0
     var y: Int = 0
 
