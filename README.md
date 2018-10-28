@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.github.kirilamenski:memorymanager:0.1.6'
+  implementation 'com.github.kirilamenski:memorymanager:0.1.7'
 }
 
 ```
