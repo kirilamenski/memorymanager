@@ -10,7 +10,7 @@ import android.view.Choreographer
 
 internal class ServiceReceiver : BroadcastReceiver() {
 
-    var memoryUtil: MemoryManagerUtil? = null
+    private var memoryUtil: MemoryManagerUtil? = null
     private var frameCallback: Choreographer.FrameCallback? = null
     private var isFirstFrame = true
 

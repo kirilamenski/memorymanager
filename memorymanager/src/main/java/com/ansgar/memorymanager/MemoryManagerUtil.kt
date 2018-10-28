@@ -5,13 +5,13 @@ import java.io.InputStreamReader
 
 internal class MemoryManagerUtil {
 
-    val fpsMap = ArrayList<Long>()
-    var lastNanoTime = 0L
-    var fps = 0
-    var frames = 0
-    var unprocessedSeconds: Double = 0.0
-    var secondsPerTick: Double = 1 / 60.0
-    var tickCount = 0
+    private val fpsMap = ArrayList<Long>()
+    private var lastNanoTime = 0L
+    private var fps = 0
+    private var frames = 0
+    private var unprocessedSeconds: Double = 0.0
+    private var secondsPerTick: Double = 1 / 60.0
+    private var tickCount = 0
 
     fun getAppMemoryUsage(): AppMemoryModel {
         val runtime = Runtime.getRuntime()
@@ -33,8 +33,8 @@ internal class MemoryManagerUtil {
                 var cpuColIndex = -1
 
                 while (br.readLine() != null) {
-                    val line = br.readLine()?.split(" ") ?: arrayListOf()
-                    val notNullLine = line.filter { !it.isNullOrEmpty() }
+                    val line = br.readLine().split(" ")
+                    val notNullLine = line.filter { !it.isEmpty() }
                     notNullLine.forEachIndexed { index, item ->
                         if (cpuColIndex > -1) {
                             if (isNumeric(item) || isCpuValue(item)) {

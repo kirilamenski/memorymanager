@@ -60,7 +60,7 @@ internal object OverlayView {
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT
         )
-        params.gravity = Gravity.TOP or Gravity.LEFT
+        params.gravity = Gravity.TOP or Gravity.START
         params.x = MemoryManager.x
         params.y = MemoryManager.y
         return params
