@@ -1,4 +1,4 @@
-Memory Manager allows you to monitor changes in FPS and memory consumption within the application.
+Memory Manager allows you to monitor changes in FPS and consumption of memory within the application.
 
 ![](https://media.giphy.com/media/1n4I0qFxn613bqUvy3/giphy.gif)
 
