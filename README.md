@@ -22,6 +22,12 @@ But to use it with ``` application ``` you need to allow "Display over other app
 
 <img src="https://i.imgur.com/y4w6edM.png" width="250" height="430" />
 
+and also add in AndroidManifest 
+
+```xml
+<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+```
+
 Kotlin
 
 ```kotlin
