@@ -18,15 +18,15 @@ dependencies {
 ```
 
 You can use this library with ``` activity ``` or with ``` application ```. 
-But to use it with ``` application ``` you need to allow "Display over other apps" in settings.
-
-<img src="https://i.imgur.com/y4w6edM.png" width="250" height="430" />
-
-and also add in AndroidManifest 
+But to use it with ``` application ``` you need add in AndroidManifest:
 
 ```xml
 <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 ```
+
+and also allow "Display over other apps" in the settings:
+
+<img src="https://i.imgur.com/y4w6edM.png" width="250" height="430" />
 
 Kotlin
 
