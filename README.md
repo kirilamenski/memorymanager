@@ -1,4 +1,4 @@
-Memory Manager allows you to monitor changes in FPS and consumption of memory within the application.
+Memory Manager allows you monitoring changes in FPS and consumption of memory within the application.
 
 ![](https://media.giphy.com/media/1n4I0qFxn613bqUvy3/giphy.gif)
 
@@ -12,21 +12,21 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.github.kirilamenski:memorymanager:0.1.7'
+  implementation 'com.github.kirilamenski:memorymanager:0.1.8'
 }
 
 ```
 
 You can use this library with ``` activity ``` or with ``` application ```. 
-But to use it with ``` application ``` you need to allow "Display over other apps" in settings.
-
-<img src="https://i.imgur.com/y4w6edM.png" width="250" height="430" />
-
-and also add in AndroidManifest 
+But to use it with ``` application ``` you need add in AndroidManifest:
 
 ```xml
 <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 ```
+
+and also allow "Display over other apps" in the settings:
+
+<img src="https://i.imgur.com/y4w6edM.png" width="250" height="430" />
 
 Kotlin
 
