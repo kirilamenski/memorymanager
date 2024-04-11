@@ -1,7 +1,5 @@
 Memory Manager allows you monitoring changes in FPS and consumption of memory within the application.
 
-![](https://media.giphy.com/media/1n4I0qFxn613bqUvy3/giphy.gif)
-
 # Usage
 
 Add following code to ``` build.gradle ```
